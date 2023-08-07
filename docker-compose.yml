@@ -9,7 +9,9 @@ networks:
     ipam:
       config:
       - subnet: 103.158.187.0/24
+        gateway: 103.158.187.254
       - subnet: 2a0f:5707:ffe3::/64
+        gateway: 2a0f:5707:ffe3::ffff
   ldix:
     driver: macvlan
     driver_opts:
@@ -18,7 +20,9 @@ networks:
     ipam:
       config:
       - subnet: 149.112.26.0/24
-      - subnet:   2a0f:607:1070::/64
+        gateway: 149.112.26.254
+      - subnet: 2a0f:607:1070::/64
+        gateway: 2a0f:607:1070::ffff
   cloudclt:
     driver: macvlan
     driver_opts:
@@ -27,21 +31,27 @@ networks:
     ipam:
       config:
       - subnet: 187.187.187.0/24
+        gateway: 187.187.187.253
       - subnet: 2def:abcd::/64
+        gateway: 2def:abcd::ffff
   stutooc:
     driver: bridge
     enable_ipv6: true
     ipam:
       config:
-      - subnet: 10.187.0.0/30
-      - subnet: 2fff:ffff::0/126
+      - subnet: 10.187.0.0/29
+        gateway: 10.187.0.6
+      - subnet: 2fff:ffff::/125
+        gateway: 2fff:ffff::6
   ldtooc:
     driver: bridge
     enable_ipv6: true
     ipam:
       config:
-      - subnet: 10.187.0.4/30
+      - subnet: 10.187.0.8/30
+        gateway: 10.187.0.14
       - subnet: 2fff:ffff::4/126
+        gateway: 2fff:ffff::e
 
 services:
   stuixrs:
@@ -80,7 +90,7 @@ services:
         ipv6_address: 2a0f:5707:ffe3::92
       stutooc:
         ipv4_address: 10.187.0.1
-        ipv6_address: 2fff:ffff::2
+        ipv6_address: 2fff:ffff::1
   cloudflare:
     cap_add:
     - CAP_NET_RAW
