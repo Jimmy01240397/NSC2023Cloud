@@ -1,0 +1,100 @@
+version: "3"
+
+networks: 
+  stuix:
+    driver: macvlan
+    driver_opts:
+      parent: eth1
+    enable_ipv6: true
+    ipam:
+      config:
+      - subnet: 103.158.187.0/24
+      - subnet: 2a0f:5707:ffe3::/64
+  ldix:
+    driver: macvlan
+    driver_opts:
+      parent: eth2
+    enable_ipv6: true
+    ipam:
+      config:
+      - subnet: 149.112.26.0/24
+      - subnet:   2a0f:607:1070::/64
+  cloudclt:
+    driver: macvlan
+    driver_opts:
+      parent: eth3
+    enable_ipv6: true
+    ipam:
+      config:
+      - subnet: 187.187.187.0/24
+      - subnet: 2def:abcd::/64
+  stutooc:
+    driver: bridge
+    enable_ipv6: true
+    ipam:
+      config:
+      - subnet: 10.187.0.0/30
+      - subnet: 2fff:ffff::0/126
+  ldtooc:
+    driver: bridge
+    enable_ipv6: true
+    ipam:
+      config:
+      - subnet: 10.187.0.4/30
+      - subnet: 2fff:ffff::4/126
+
+services:
+  stuixrs:
+    cap_add:
+    - CAP_NET_RAW
+    - NET_ADMIN
+    - SYS_ADMIN
+    privileged: false
+    container_name: stuixrs
+    build:
+      dockerfile: ./stuixrs/Dockerfile
+    volumes:
+    - ./stuixrs/frr:/etc/frr
+    - ./stuixrs:/setup
+    command: "/bin/bash /setup/start.sh"
+    networks:
+      stuix:
+        ipv4_address: 103.158.187.1
+        ipv6_address: 2a0f:5707:ffe3::1
+  as48024:
+    cap_add:
+    - CAP_NET_RAW
+    - NET_ADMIN
+    - SYS_ADMIN
+    privileged: false
+    container_name: as48024
+    build:
+      dockerfile: ./as48024/Dockerfile
+    volumes:
+    - ./as48024/frr:/etc/frr
+    - ./as48024:/setup
+    command: "/bin/bash /setup/start.sh"
+    networks:
+      stuix:
+        ipv4_address: 103.158.187.92
+        ipv6_address: 2a0f:5707:ffe3::92
+      stutooc:
+        ipv4_address: 10.187.0.1
+        ipv6_address: 2fff:ffff::2
+  cloudflare:
+    cap_add:
+    - CAP_NET_RAW
+    - NET_ADMIN
+    - SYS_ADMIN
+    privileged: false
+    container_name: cloudflare
+    build:
+      dockerfile: ./cloudflare/Dockerfile
+    volumes:
+    - ./cloudflare/frr:/etc/frr
+    - ./cloudflare:/setup
+    command: "/bin/bash /setup/start.sh"
+    networks:
+      stuix:
+        ipv4_address: 103.158.187.34
+        ipv6_address: 2a0f:5707:ffe3::34
