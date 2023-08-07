@@ -64,8 +64,8 @@ services:
     build:
       dockerfile: ./stuixrs/Dockerfile
     volumes:
-    - ./stuixrs/frr:/etc/frr
-    - ./stuixrs:/setup
+    - ./stuixrs/frr:/etc/frr:ro
+    - ./stuixrs:/setup:ro
     command: "/bin/bash /setup/start.sh"
     networks:
       stuix:
@@ -81,8 +81,8 @@ services:
     build:
       dockerfile: ./as48024/Dockerfile
     volumes:
-    - ./as48024/frr:/etc/frr
-    - ./as48024:/setup
+    - ./as48024/frr:/etc/frr:ro
+    - ./as48024:/setup:ro
     command: "/bin/bash /setup/start.sh"
     networks:
       stuix:
@@ -101,8 +101,8 @@ services:
     build:
       dockerfile: ./cloudflare/Dockerfile
     volumes:
-    - ./cloudflare/frr:/etc/frr
-    - ./cloudflare:/setup
+    - ./cloudflare/frr:/etc/frr:ro
+    - ./cloudflare:/setup:ro
     command: "/bin/bash /setup/start.sh"
     networks:
       stuix:
