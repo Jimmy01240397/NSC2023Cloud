@@ -1,7 +1,7 @@
 version: "3"
 
 networks: 
-  stuix:
+  10-stuix:
     driver: macvlan
     driver_opts:
       parent: eth1
@@ -12,7 +12,7 @@ networks:
         gateway: 103.158.187.254
       - subnet: 2a0f:5707:ffe3::/64
         gateway: 2a0f:5707:ffe3::ffff
-  ldix:
+  20-ldix:
     driver: macvlan
     driver_opts:
       parent: eth2
@@ -23,7 +23,7 @@ networks:
         gateway: 149.112.26.254
       - subnet: 2a0f:607:1070::/64
         gateway: 2a0f:607:1070::ffff
-  cloudclt:
+  30-cloudclt:
     driver: macvlan
     driver_opts:
       parent: eth3
@@ -34,7 +34,7 @@ networks:
         gateway: 187.187.187.253
       - subnet: 2def:abcd::/64
         gateway: 2def:abcd::ffff
-  stutooc:
+  15-stutooc:
     driver: bridge
     enable_ipv6: true
     ipam:
@@ -43,14 +43,14 @@ networks:
         gateway: 10.187.0.6
       - subnet: 2fff:ffff::/125
         gateway: 2fff:ffff::6
-  ldtooc:
+  25-ldtooc:
     driver: bridge
     enable_ipv6: true
     ipam:
       config:
-      - subnet: 10.187.0.8/30
+      - subnet: 10.187.0.8/29
         gateway: 10.187.0.14
-      - subnet: 2fff:ffff::4/126
+      - subnet: 2fff:ffff::8/125
         gateway: 2fff:ffff::e
 
 services:
@@ -66,9 +66,15 @@ services:
     volumes:
     - ./stuixrs/frr:/etc/frr:ro
     - ./stuixrs:/setup:ro
+    sysctls:
+    - net.ipv4.ip_forward=1
+    - net.ipv6.conf.default.forwarding=1
+    - net.ipv6.conf.all.forwarding=1
+    - net.ipv6.conf.all.proxy_ndp=1
+    - net.ipv6.conf.all.accept_ra=2
     command: "/bin/bash /setup/start.sh"
     networks:
-      stuix:
+      10-stuix:
         ipv4_address: 103.158.187.1
         ipv6_address: 2a0f:5707:ffe3::1
   as48024:
@@ -83,12 +89,18 @@ services:
     volumes:
     - ./as48024/frr:/etc/frr:ro
     - ./as48024:/setup:ro
+    sysctls:
+    - net.ipv4.ip_forward=1
+    - net.ipv6.conf.default.forwarding=1
+    - net.ipv6.conf.all.forwarding=1
+    - net.ipv6.conf.all.proxy_ndp=1
+    - net.ipv6.conf.all.accept_ra=2
     command: "/bin/bash /setup/start.sh"
     networks:
-      stuix:
+      10-stuix:
         ipv4_address: 103.158.187.92
         ipv6_address: 2a0f:5707:ffe3::92
-      stutooc:
+      15-stutooc:
         ipv4_address: 10.187.0.1
         ipv6_address: 2fff:ffff::1
   cloudflare:
@@ -103,8 +115,115 @@ services:
     volumes:
     - ./cloudflare/frr:/etc/frr:ro
     - ./cloudflare:/setup:ro
+    sysctls:
+    - net.ipv4.ip_forward=1
+    - net.ipv6.conf.default.forwarding=1
+    - net.ipv6.conf.all.forwarding=1
+    - net.ipv6.conf.all.proxy_ndp=1
+    - net.ipv6.conf.all.accept_ra=2
     command: "/bin/bash /setup/start.sh"
     networks:
-      stuix:
+      10-stuix:
         ipv4_address: 103.158.187.34
         ipv6_address: 2a0f:5707:ffe3::34
+  ldrs:
+    cap_add:
+    - CAP_NET_RAW
+    - NET_ADMIN
+    - SYS_ADMIN
+    privileged: false
+    container_name: ldrs
+    build:
+      dockerfile: ./ldrs/Dockerfile
+    volumes:
+    - ./ldrs/frr:/etc/frr:ro
+    - ./ldrs:/setup:ro
+    sysctls:
+    - net.ipv4.ip_forward=1
+    - net.ipv6.conf.default.forwarding=1
+    - net.ipv6.conf.all.forwarding=1
+    - net.ipv6.conf.all.proxy_ndp=1
+    - net.ipv6.conf.all.accept_ra=2
+    command: "/bin/bash /setup/start.sh"
+    networks:
+      20-ldix:
+        ipv4_address: 149.112.26.253
+        ipv6_address: 2a0f:607:1070::253
+  as7720:
+    cap_add:
+    - CAP_NET_RAW
+    - NET_ADMIN
+    - SYS_ADMIN
+    privileged: false
+    container_name: as7720
+    build:
+      dockerfile: ./as7720/Dockerfile
+    volumes:
+    - ./as7720/frr:/etc/frr:ro
+    - ./as7720:/setup:ro
+    sysctls:
+    - net.ipv4.ip_forward=1
+    - net.ipv6.conf.default.forwarding=1
+    - net.ipv6.conf.all.forwarding=1
+    - net.ipv6.conf.all.proxy_ndp=1
+    - net.ipv6.conf.all.accept_ra=2
+    command: "/bin/bash /setup/start.sh"
+    networks:
+      20-ldix:
+        ipv4_address: 149.112.26.18
+        ipv6_address: 2a0f:607:1070::18
+      25-ldtooc:
+        ipv4_address: 10.187.0.9
+        ipv6_address: 2fff:ffff::9
+  google:
+    cap_add:
+    - CAP_NET_RAW
+    - NET_ADMIN
+    - SYS_ADMIN
+    privileged: false
+    container_name: google
+    build:
+      dockerfile: ./google/Dockerfile
+    volumes:
+    - ./google/frr:/etc/frr:ro
+    - ./google:/setup:ro
+    sysctls:
+    - net.ipv4.ip_forward=1
+    - net.ipv6.conf.default.forwarding=1
+    - net.ipv6.conf.all.forwarding=1
+    - net.ipv6.conf.all.proxy_ndp=1
+    - net.ipv6.conf.all.accept_ra=2
+    command: "/bin/bash /setup/start.sh"
+    networks:
+      20-ldix:
+        ipv4_address: 149.112.26.76
+        ipv6_address: 2a0f:607:1070::76
+  othercloud:
+    cap_add:
+    - CAP_NET_RAW
+    - NET_ADMIN
+    - SYS_ADMIN
+    privileged: false
+    container_name: othercloud
+    build:
+      dockerfile: ./othercloud/Dockerfile
+    volumes:
+    - ./othercloud/frr:/etc/frr:ro
+    - ./othercloud:/setup:ro
+    sysctls:
+    - net.ipv4.ip_forward=1
+    - net.ipv6.conf.default.forwarding=1
+    - net.ipv6.conf.all.forwarding=1
+    - net.ipv6.conf.all.proxy_ndp=1
+    - net.ipv6.conf.all.accept_ra=2
+    command: "/bin/bash /setup/start.sh"
+    networks:
+      15-stutooc:
+        ipv4_address: 10.187.0.2
+        ipv6_address: 2fff:ffff::2
+      25-ldtooc:
+        ipv4_address: 10.187.0.10
+        ipv6_address: 2fff:ffff::a
+      30-cloudclt:
+        ipv4_address: 187.187.187.254
+        ipv6_address: 2def:abcd::1
