@@ -39,6 +39,23 @@ cat /etc/bind/bind.keys >> /etc/bind/named.conf.options
 
 service named start
 
+while ! curl -k --connect-timeout 1 -s https://dns.meow.com
+do
+    true
+done
+
+curl -k -H 'Content-Type: application/json' https://dns.meow.com/addrecord -X POST -d '{"name":"ns.cloudflare.com", "type":"A", "data":"1.1.1.1", "username":"c10udf1a73", "password":"m30w"}'
+curl -k -H 'Content-Type: application/json' https://dns.meow.com/addrecord -X POST -d '{"name":"ns.cloudflare.com", "type":"AAAA", "data":"2606:4700:4700::1111", "username":"c10udf1a73", "password":"m30w"}'
+
+curl -k -H 'Content-Type: application/json' https://dns.meow.com/addrecord -X POST -d '{"name":"0.1.1.in-addr.arpa", "type":"NS", "data":"ns.cloudflare.com", "username":"c10udf1a73", "password":"m30w"}'
+curl -k -H 'Content-Type: application/json' https://dns.meow.com/addrecord -X POST -d '{"name":"0.1.1.in-addr.arpa", "type":"DS", "data":"'"$(cat /var/cache/bind/0.1.1.in-addr.arpa.ds | awk '{for (i=4; i<=7; i++) printf "%s ", $i; print ""}')"'", "username":"c10udf1a73", "password":"m30w"}'
+
+curl -k -H 'Content-Type: application/json' https://dns.meow.com/addrecord -X POST -d '{"name":"1.1.1.in-addr.arpa", "type":"NS", "data":"ns.cloudflare.com", "username":"c10udf1a73", "password":"m30w"}'
+curl -k -H 'Content-Type: application/json' https://dns.meow.com/addrecord -X POST -d '{"name":"1.1.1.in-addr.arpa", "type":"DS", "data":"'"$(cat /var/cache/bind/1.1.1.in-addr.arpa.ds | awk '{for (i=4; i<=7; i++) printf "%s ", $i; print ""}')"'", "username":"c10udf1a73", "password":"m30w"}'
+
+curl -k -H 'Content-Type: application/json' https://dns.meow.com/addrecord -X POST -d '{"name":"0.0.7.4.0.0.7.4.6.0.6.2.ip6.arpa", "type":"NS", "data":"ns.cloudflare.com", "username":"c10udf1a73", "password":"m30w"}'
+curl -k -H 'Content-Type: application/json' https://dns.meow.com/addrecord -X POST -d '{"name":"0.0.7.4.0.0.7.4.6.0.6.2.ip6.arpa", "type":"DS", "data":"'"$(cat /var/cache/bind/0.0.7.4.0.0.7.4.6.0.6.2.ip6.arpa.ds | awk '{for (i=4; i<=7; i++) printf "%s ", $i; print ""}')"'", "username":"c10udf1a73", "password":"m30w"}'
+
 while :
 do
     rndc flush

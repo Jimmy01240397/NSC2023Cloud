@@ -6,3 +6,29 @@
 // organization
 //include "/etc/bind/zones.rfc1918";
 
+zone "0.1.1.in-addr.arpa" {
+	type master;
+    key-directory ".";
+    auto-dnssec maintain;
+    inline-signing yes;
+	file "db.0.1.1.in-addr";
+    allow-update { key "rndc-key"; };
+};
+
+zone "1.1.1.in-addr.arpa" {
+	type master;
+    key-directory ".";
+    auto-dnssec maintain;
+    inline-signing yes;
+	file "db.1.1.1.in-addr";
+    allow-update { key "rndc-key"; };
+};
+
+zone "0.0.7.4.0.0.7.4.6.0.6.2.ip6.arpa" {
+	type master;
+    key-directory ".";
+    auto-dnssec maintain;
+    inline-signing yes;
+	file "db.0.0.7.4.0.0.7.4.6.0.6.2.ip6";
+    allow-update { key "rndc-key"; };
+};
