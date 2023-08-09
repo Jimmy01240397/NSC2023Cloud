@@ -277,12 +277,15 @@ services:
     - SYS_ADMIN
     privileged: false
     container_name: othercloud
+    dns: 
+    - 127.0.0.1
     build:
       context: ./othercloud
       dockerfile: Dockerfile
     volumes:
     - ./othercloud/frr:/etc/frr:ro
     - ./othercloud:/setup:ro
+    - ./othercloud/nginx/sitesconf:/etc/nginx/sites-enabled:ro
     sysctls:
     - net.ipv4.ip_forward=1
     - net.ipv6.conf.default.forwarding=1
@@ -300,3 +303,24 @@ services:
       30-cloudclt:
         ipv4_address: 187.187.187.254
         ipv6_address: 2def:abcd::1
+  rootcaserver:
+    cap_add:
+    - CAP_NET_RAW
+    - NET_ADMIN
+    - SYS_ADMIN
+    privileged: false
+    container_name: rootcaserver
+    build:
+      context: https://github.com/NCKU-NASA/CA-server-api.git#master:.
+      dockerfile: Dockerfile
+      args:
+        CACN: nsc39
+    volumes:
+    - ./rootcaserver/config.yaml:/usr/app/config.yaml:ro
+    - ./rootcaserver/sign:/usr/app/sign:ro
+    - ./rootcaserver:/setup:ro
+    command: "/bin/bash /setup/start.sh 187.187.187.254 2def:abcd::1"
+    networks:
+      30-cloudclt:
+        ipv4_address: 187.187.187.1
+        ipv6_address: 2def:abcd::ca

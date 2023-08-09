@@ -88,7 +88,7 @@ M.ROOT-SERVERS.NET.      AAAA  2001:dc3::35
 keys.   A   198.41.0.4
 keys.   AAAA   2001:503:ba3e::2:30
 
-ca.meow.com.    A   198.41.0.4
-ca.meow.com.    AAAA   2001:503:ba3e::2:30
+ca.meow.com.    A   187.187.187.1
+ca.meow.com.    AAAA   2def:abcd::ca
 dns.meow.com.    A   198.41.0.4
 dns.meow.com.    AAAA   2001:503:ba3e::2:30

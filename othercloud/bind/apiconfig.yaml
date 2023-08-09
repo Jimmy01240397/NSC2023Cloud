@@ -1,4 +1,4 @@
-ListenHost: "[::]"
+ListenHost: "127.0.0.1"
 ListenPort: 3053
 auth:
 - hostname: skills39.tw
