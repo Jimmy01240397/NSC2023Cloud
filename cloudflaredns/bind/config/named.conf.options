@@ -20,5 +20,18 @@ options {
 	//========================================================================
 	dnssec-validation yes;
 
+    allow-query { any; };
 	listen-on-v6 { any; };
+};
+
+logging {
+    channel simple_log {
+        file "/var/log/bind/named.log";
+        severity info;
+        print-time yes;
+    };
+
+    category default {
+        simple_log;
+    };
 };
