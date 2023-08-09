@@ -18,7 +18,25 @@ options {
 	// If BIND logs error messages about the root key being expired,
 	// you will need to update your keys.  See https://www.isc.org/bind-keys
 	//========================================================================
-	dnssec-validation auto;
+	dnssec-validation yes;
+
+    max-ncache-ttl 0;
+    max-cache-ttl 0;
+    max-cache-size 0;
+
+    //allow-query { none; };
+    allow-new-zones yes;
 
 	listen-on-v6 { any; };
+};
+logging {
+    channel simple_log {
+        file "/var/log/bind/named.log";
+        severity info;
+        print-time yes;
+    };
+
+    category default {
+        simple_log;
+    };
 };

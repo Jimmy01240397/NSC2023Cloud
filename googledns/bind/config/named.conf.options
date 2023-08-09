@@ -20,6 +20,10 @@ options {
 	//========================================================================
 	dnssec-validation yes;
 
+    max-ncache-ttl 0;
+    max-cache-ttl 0;
+    max-cache-size 0;
+
     allow-query { any; };
 	listen-on-v6 { any; };
 };

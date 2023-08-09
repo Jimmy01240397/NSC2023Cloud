@@ -1,3 +1,12 @@
+
+include "/etc/bind/rndc.key";
+
+controls {
+    inet 127.0.0.1 port 953
+    allow { 127.0.0.1; } keys { "rndc-key"; };
+};
+
+
 // prime the server with knowledge of the root servers
 zone "." {
 	type master;
@@ -5,6 +14,7 @@ zone "." {
     auto-dnssec maintain;
     inline-signing yes;
 	file "db.";
+    allow-update { key "rndc-key"; };
 };
 
 // be authoritative for the localhost forward and reverse zones, and for

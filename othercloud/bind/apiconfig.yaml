@@ -1,0 +1,87 @@
+ListenHost: "[::]"
+ListenPort: 3053
+auth:
+- hostname: skills39.tw
+  zone: "."
+  allowtype:
+  - NS
+  - DS
+  username: nsc
+  password: Skills39
+- hostname: "*.skills39.tw"
+  zone: "."
+  allowtype:
+  - A
+  - AAAA
+  username: nsc
+  password: Skills39
+- hostname: 90.69.103.in-addr.arpa
+  zone: "."
+  allowtype:
+  - NS
+  - DS
+  username: nsc
+  password: Skills39
+- hostname: 91.69.103.in-addr.arpa
+  zone: "."
+  allowtype:
+  - NS
+  - DS
+  username: nsc
+  password: Skills39
+- hostname: 0.1.3.0.4.2.9.7.0.4.2.ip6.arpa
+  zone: "."
+  allowtype:
+  - NS
+  - DS
+  username: nsc
+  password: Skills39
+- hostname: "*.cloudflare.com"
+  zone: "."
+  allowtype:
+  - A
+  - AAAA
+  username: c10udf1a73
+  password: m30w
+- hostname: 0.1.1.in-addr.arpa
+  zone: "."
+  allowtype:
+  - NS
+  - DS
+  username: c10udf1a73
+  password: m30w
+- hostname: 1.1.1.in-addr.arpa
+  zone: "."
+  allowtype:
+  - NS
+  - DS
+  username: c10udf1a73
+  password: m30w
+- hostname: 0.0.7.4.0.0.7.4.6.0.6.2.ip6.arpa
+  zone: "."
+  allowtype:
+  - NS
+  - DS
+  username: c10udf1a73
+  password: m30w
+- hostname: "*.google.com"
+  zone: "."
+  allowtype:
+  - A
+  - AAAA
+  username: g0ol3
+  password: m30w
+- hostname: 8.8.8.in-addr.arpa
+  zone: "."
+  allowtype:
+  - NS
+  - DS
+  username: g0ol3
+  password: m30w
+- hostname: 0.6.8.4.0.6.8.4.1.0.0.2.ip6.arpa
+  zone: "."
+  allowtype:
+  - NS
+  - DS
+  username: g0ol3
+  password: m30w

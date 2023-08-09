@@ -19,6 +19,10 @@ options {
 	// you will need to update your keys.  See https://www.isc.org/bind-keys
 	//========================================================================
 	dnssec-validation yes;
+    
+    max-ncache-ttl 0;
+    max-cache-ttl 0;
+    max-cache-size 0;
 
     allow-query { any; };
 	listen-on-v6 { any; };

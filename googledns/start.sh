@@ -39,4 +39,8 @@ cat /etc/bind/bind.keys >> /etc/bind/named.conf.options
 
 service named start
 
-sleep infinity
+while :
+do
+    rndc flush
+    sleep 1
+done
