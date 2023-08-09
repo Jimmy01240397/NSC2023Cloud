@@ -86,6 +86,7 @@ M.ROOT-SERVERS.NET.      A     202.12.27.33
 M.ROOT-SERVERS.NET.      AAAA  2001:dc3::35
 
 keys.   A   198.41.0.4
+keys.   AAAA   2001:503:ba3e::2:30
 
 skills39.tw.    NS  ns1.skills39.tw.
 ns1.skills39.tw.    A   103.69.91.1
