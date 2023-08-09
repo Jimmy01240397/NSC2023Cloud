@@ -52,6 +52,24 @@ networks:
         gateway: 10.187.0.14
       - subnet: 2fff:ffff::8/125
         gateway: 2fff:ffff::e
+  40-cloudflaredns:
+    driver: bridge
+    enable_ipv6: true
+    ipam:
+      config:
+      - subnet: 1.1.1.0/24
+        gateway: 1.1.1.253
+      - subnet: 2606:4700:4700::/64
+        gateway: 2606:4700:4700::ffff
+  45-googledns:
+    driver: bridge
+    enable_ipv6: true
+    ipam:
+      config:
+      - subnet: 8.8.8.0/24
+        gateway: 8.8.8.253
+      - subnet: 2001:4860:4860::/64
+        gateway: 2001:4860:4860::ffff
 
 services:
   stuixrs:
@@ -62,7 +80,8 @@ services:
     privileged: false
     container_name: stuixrs
     build:
-      dockerfile: ./stuixrs/Dockerfile
+      context: ./stuixrs
+      dockerfile: Dockerfile
     volumes:
     - ./stuixrs/frr:/etc/frr:ro
     - ./stuixrs:/setup:ro
@@ -85,7 +104,8 @@ services:
     privileged: false
     container_name: as48024
     build:
-      dockerfile: ./as48024/Dockerfile
+      context: ./as48024
+      dockerfile: Dockerfile
     volumes:
     - ./as48024/frr:/etc/frr:ro
     - ./as48024:/setup:ro
@@ -111,7 +131,8 @@ services:
     privileged: false
     container_name: cloudflare
     build:
-      dockerfile: ./cloudflare/Dockerfile
+      context: ./cloudflare
+      dockerfile: Dockerfile
     volumes:
     - ./cloudflare/frr:/etc/frr:ro
     - ./cloudflare:/setup:ro
@@ -126,6 +147,30 @@ services:
       10-stuix:
         ipv4_address: 103.158.187.34
         ipv6_address: 2a0f:5707:ffe3::34
+      40-cloudflaredns:
+        ipv4_address: 1.1.1.254
+        ipv6_address: 2606:4700:4700::1
+  cloudflaredns:
+    cap_add:
+    - CAP_NET_RAW
+    - NET_ADMIN
+    - SYS_ADMIN
+    privileged: false
+    container_name: cloudflaredns
+    dns: 
+    - 1.1.1.1
+    - 2606:4700:4700::1111
+    #- 198.41.0.4
+    build:
+      context: ./cloudflaredns
+      dockerfile: Dockerfile
+    volumes:
+    - ./cloudflaredns:/setup:ro
+    command: "/bin/bash /setup/start.sh 1.1.1.254 2606:4700:4700::1"
+    networks:
+      40-cloudflaredns:
+        ipv4_address: 1.1.1.1
+        ipv6_address: 2606:4700:4700::1111
   ldrs:
     cap_add:
     - CAP_NET_RAW
@@ -134,7 +179,8 @@ services:
     privileged: false
     container_name: ldrs
     build:
-      dockerfile: ./ldrs/Dockerfile
+      context: ./ldrs
+      dockerfile: Dockerfile
     volumes:
     - ./ldrs/frr:/etc/frr:ro
     - ./ldrs:/setup:ro
@@ -157,7 +203,8 @@ services:
     privileged: false
     container_name: as7720
     build:
-      dockerfile: ./as7720/Dockerfile
+      context: ./as7720
+      dockerfile: Dockerfile
     volumes:
     - ./as7720/frr:/etc/frr:ro
     - ./as7720:/setup:ro
@@ -183,7 +230,8 @@ services:
     privileged: false
     container_name: google
     build:
-      dockerfile: ./google/Dockerfile
+      context: ./google
+      dockerfile: Dockerfile
     volumes:
     - ./google/frr:/etc/frr:ro
     - ./google:/setup:ro
@@ -198,6 +246,30 @@ services:
       20-ldix:
         ipv4_address: 149.112.26.76
         ipv6_address: 2a0f:607:1070::76
+      45-googledns:
+        ipv4_address: 8.8.8.254
+        ipv6_address: 2001:4860:4860::1
+  googledns:
+    cap_add:
+    - CAP_NET_RAW
+    - NET_ADMIN
+    - SYS_ADMIN
+    privileged: false
+    container_name: googledns
+    dns: 
+    - 8.8.8.8
+    - 2001:4860:4860::8888
+    #- 198.41.0.4
+    build:
+      context: ./googledns
+      dockerfile: Dockerfile
+    volumes:
+    - ./googledns:/setup:ro
+    command: "/bin/bash /setup/start.sh 8.8.8.254 2001:4860:4860::1"
+    networks:
+      45-googledns:
+        ipv4_address: 8.8.8.8
+        ipv6_address: 2001:4860:4860::8888
   othercloud:
     cap_add:
     - CAP_NET_RAW
@@ -206,7 +278,8 @@ services:
     privileged: false
     container_name: othercloud
     build:
-      dockerfile: ./othercloud/Dockerfile
+      context: ./othercloud
+      dockerfile: Dockerfile
     volumes:
     - ./othercloud/frr:/etc/frr:ro
     - ./othercloud:/setup:ro

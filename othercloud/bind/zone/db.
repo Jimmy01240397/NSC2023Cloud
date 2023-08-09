@@ -1,0 +1,100 @@
+;
+; BIND data file for local loopback interface
+;
+$TTL	3600000
+@	IN	SOA	A.ROOT-SERVERS.NET. root. (
+			      2		; Serial
+			 604800		; Refresh
+			  86400		; Retry
+			2419200		; Expire
+			 604800 )	; Negative Cache TTL
+;
+.                        NS    A.ROOT-SERVERS.NET.
+A.ROOT-SERVERS.NET.      A     198.41.0.4
+A.ROOT-SERVERS.NET.      AAAA  2001:503:ba3e::2:30
+; 
+; FORMERLY NS1.ISI.EDU 
+;
+.                        NS    B.ROOT-SERVERS.NET.
+B.ROOT-SERVERS.NET.      A     199.9.14.201
+B.ROOT-SERVERS.NET.      AAAA  2001:500:200::b
+; 
+; FORMERLY C.PSI.NET 
+;
+.                        NS    C.ROOT-SERVERS.NET.
+C.ROOT-SERVERS.NET.      A     192.33.4.12
+C.ROOT-SERVERS.NET.      AAAA  2001:500:2::c
+; 
+; FORMERLY TERP.UMD.EDU 
+;
+.                        NS    D.ROOT-SERVERS.NET.
+D.ROOT-SERVERS.NET.      A     199.7.91.13
+D.ROOT-SERVERS.NET.      AAAA  2001:500:2d::d
+; 
+; FORMERLY NS.NASA.GOV
+;
+.                        NS    E.ROOT-SERVERS.NET.
+E.ROOT-SERVERS.NET.      A     192.203.230.10
+E.ROOT-SERVERS.NET.      AAAA  2001:500:a8::e
+; 
+; FORMERLY NS.ISC.ORG
+;
+.                        NS    F.ROOT-SERVERS.NET.
+F.ROOT-SERVERS.NET.      A     192.5.5.241
+F.ROOT-SERVERS.NET.      AAAA  2001:500:2f::f
+; 
+; FORMERLY NS.NIC.DDN.MIL
+;
+.                        NS    G.ROOT-SERVERS.NET.
+G.ROOT-SERVERS.NET.      A     192.112.36.4
+G.ROOT-SERVERS.NET.      AAAA  2001:500:12::d0d
+; 
+; FORMERLY AOS.ARL.ARMY.M
+;
+.                        NS    H.ROOT-SERVERS.NET.
+H.ROOT-SERVERS.NET.      A     198.97.190.53
+H.ROOT-SERVERS.NET.      AAAA  2001:500:1::53
+; 
+; FORMERLY NIC.NORDU.NET
+;
+.                        NS    I.ROOT-SERVERS.NET.
+I.ROOT-SERVERS.NET.      A     192.36.148.17
+I.ROOT-SERVERS.NET.      AAAA  2001:7fe::53
+; 
+; OPERATED BY VERISIGN, I
+;
+.                        NS    J.ROOT-SERVERS.NET.
+J.ROOT-SERVERS.NET.      A     192.58.128.30
+J.ROOT-SERVERS.NET.      AAAA  2001:503:c27::2:30
+; 
+; OPERATED BY RIPE NCC
+;
+.                        NS    K.ROOT-SERVERS.NET.
+K.ROOT-SERVERS.NET.      A     193.0.14.129
+K.ROOT-SERVERS.NET.      AAAA  2001:7fd::1
+; 
+; OPERATED BY ICANN
+;
+.                        NS    L.ROOT-SERVERS.NET.
+L.ROOT-SERVERS.NET.      A     199.7.83.42
+L.ROOT-SERVERS.NET.      AAAA  2001:500:9f::42
+; 
+; OPERATED BY WIDE
+;
+.                        NS    M.ROOT-SERVERS.NET.
+M.ROOT-SERVERS.NET.      A     202.12.27.33
+M.ROOT-SERVERS.NET.      AAAA  2001:dc3::35
+
+keys.   A   198.41.0.4
+
+skills39.tw.    NS  ns1.skills39.tw.
+ns1.skills39.tw.    A   103.69.91.1
+ns1.skills39.tw.    AAAA    2407:9240:3102::2
+skills39.tw.    NS  ns2.skills39.tw.
+ns2.skills39.tw.    A   103.69.91.2
+ns2.skills39.tw.    AAAA    2407:9240:3102::3
+
+ca.meow.com.    A   198.41.0.4
+ca.meow.com.    AAAA   2001:503:ba3e::2:30
+
+
