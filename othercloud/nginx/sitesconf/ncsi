@@ -10,6 +10,6 @@ server {
 	
     location /connecttest.txt {
         add_header Content-Type text/plain;
-        return 200 "Microsoft Connect Test"
+        return 200 "Microsoft Connect Test";
     }
 }
