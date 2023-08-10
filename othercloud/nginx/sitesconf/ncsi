@@ -1,0 +1,15 @@
+server {
+	listen 80;
+	listen [::]:80;
+
+	server_name www.msftconnecttest.com ipv6.msftconnecttest.com;
+
+	location / {
+		try_files $uri $uri/ =404;
+	}
+	
+    location /connecttest.txt {
+        add_header Content-Type text/plain;
+        return 200 "Microsoft Connect Test"
+    }
+}

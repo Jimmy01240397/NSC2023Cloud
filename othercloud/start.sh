@@ -12,15 +12,15 @@ fi
 chown -R bind:bind /var/cache/bind/
 
 mkdir /var/www/keys
-ln -s /var/cache/bind/$(cat /tmp/kskname).key /var/www/keys/dnskey
-dnssec-dsfromkey /var/cache/bind/$(cat /tmp/kskname).key > /var/www/keys/ds
+ln -s /var/cache/bind/$(cat /var/cache/bind/kskname.).key /var/www/keys/dnskey
+dnssec-dsfromkey /var/cache/bind/$(cat /var/cache/bind/kskname.).key > /var/www/keys/ds
 
 if ! [ -f /etc/bind/rndc.key ]
 then
     rndc-confgen | sed -n '2,5p' > /etc/bind/rndc.key
 fi
 
-echo 'managed-keys {' > /etc/bind/bind.ds
+echo 'trust-anchors {' > /etc/bind/bind.ds
 keydata="$(cat /var/www/keys/ds | sed 's/IN DS/static-ds/g')"
 for a in $(seq 1 1 $(echo "$keydata" | awk '{print NF}'))
 do
@@ -42,7 +42,7 @@ do
 done
 echo '};' >> /etc/bind/bind.ds
 
-cat /etc/bind/bind.ds >> /etc/bind/named.conf.docker
+cat /etc/bind/bind.ds > /etc/bind/named.conf.docker
 service named start
 
 while :
