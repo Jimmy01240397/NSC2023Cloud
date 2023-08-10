@@ -10,7 +10,6 @@ RUN git clone https://github.com/OpenVPN/easy-rsa && \
     ln -s ../share/easy-rsa/easyrsa /usr/local/bin/easyrsa
 
 RUN git clone https://github.com/Jimmy01240397/Bind9Manager /bindmanager
-COPY bind/apiconfig.yaml /bindmanager/config.yaml
 RUN pip3 install -r /bindmanager/requirements.txt --break-system-packages
 
 RUN mkdir /var/log/bind && chown bind:bind /var/log/bind

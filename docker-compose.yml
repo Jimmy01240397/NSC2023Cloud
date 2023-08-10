@@ -312,6 +312,7 @@ services:
     - ./othercloud/frr:/etc/frr:ro
     - ./othercloud:/setup:ro
     - ./othercloud/nginx/sitesconf:/etc/nginx/sites-enabled:ro
+    - ./othercloud/bind/apiconfig.yaml:/bindmanager/config.yaml:ro
     - ./othercloud/bind/config:/etc/bind:rw
     - ./othercloud/bind/zone:/var/cache/bind:rw
     - ./othercloud/nginx/certs:/etc/nginx/certs:rw
