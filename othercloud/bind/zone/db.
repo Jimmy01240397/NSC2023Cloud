@@ -98,3 +98,6 @@ dns.msftncsi.com.    AAAA   fd3e:4f5a:5b81::1
 
 www.msftconnecttest.com.    A   198.41.0.4
 ipv6.msftconnecttest.com.    AAAA   2001:503:ba3e::2:30
+
+time.windows.com.    A   198.41.0.4
+time.windows.com.    AAAA   2001:503:ba3e::2:30
