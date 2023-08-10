@@ -342,8 +342,6 @@ services:
     build:
       context: https://github.com/NCKU-NASA/CA-server-api.git#master:.
       dockerfile: Dockerfile
-      args:
-        CACN: nsc39
     volumes:
     - ./rootcaserver/config.yaml:/usr/app/config.yaml:ro
     - ./rootcaserver/sign:/usr/app/sign:ro
