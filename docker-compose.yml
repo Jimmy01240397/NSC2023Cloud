@@ -343,6 +343,9 @@ services:
     build:
       context: https://github.com/NCKU-NASA/CA-server-api.git#master:.
       dockerfile: Dockerfile
+      args:
+        CRLURI: http://ca.meow.com/crl
+        CAISSUERSURI: http://ca.meow.com/ca
     volumes:
     - ./rootcaserver/config.yaml:/usr/app/config.yaml:ro
     - ./rootcaserver/sign:/usr/app/sign:ro
