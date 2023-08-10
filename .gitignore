@@ -1,4 +1,15 @@
 *.swp
+*.key
+*.private
+*.jnl
+*.ds
+*.docker
+*.signed
+*.jbk
+*.nzd
+kskname.*
+managed-keys.bind
+
 /rootcaserver/pki/*
 !/rootcaserver/pki/readme.md
 /othercloud/nginx/certs/*
