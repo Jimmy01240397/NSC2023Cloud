@@ -12,6 +12,11 @@ done
 curl --connect-timeout 1 -s --resolve 'keys:80:198.41.0.4' keys/dnskey > /usr/share/dns/root.key
 curl --connect-timeout 1 -s --resolve 'keys:80:198.41.0.4' keys/ds > /usr/share/dns/root.ds
 
+if ! [ -f /etc/bind/rndc.key ]
+then
+    rndc-confgen | sed -n '2,5p' > /etc/bind/rndc.key
+fi
+
 echo 'managed-keys {' > /etc/bind/bind.ds
 #cat /usr/share/dns/root.ds | sed 's/IN DS/static-key/g' | sed 's/$/;/' >> /etc/bind/bind.keys
 keydata="$(cat /usr/share/dns/root.ds | sed 's/IN DS/static-ds/g')"
