@@ -14,8 +14,8 @@ RUN pip3 install -r /bindmanager/requirements.txt --break-system-packages
 
 RUN mkdir /var/log/bind && chown bind:bind /var/log/bind
 
-RUN echo "server 127.127.1.0" > /etc/ntp.conf && \
-    echo "fudge 127.127.1.0 stratum 10" >> /etc/ntp.conf
+RUN echo "server 127.127.1.0" > /etc/ntpsec/ntp.conf && \
+    echo "fudge 127.127.1.0 stratum 10" >> /etc/ntpsec/ntp.conf
 
-
+RUN mkdir /var/log/ntpsec
     

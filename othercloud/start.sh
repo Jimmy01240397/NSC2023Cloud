@@ -3,7 +3,7 @@ ip -6 route del default
 chown -R frr.frr /etc/frr
 service frr start
 
-service ntp start
+service ntpsec start
 
 
 if ! [ -f /var/cache/bind/kskname. ]

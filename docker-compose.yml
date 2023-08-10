@@ -301,7 +301,8 @@ services:
     - CAP_NET_RAW
     - NET_ADMIN
     - SYS_ADMIN
-    privileged: false
+    - CAP_SYS_TIME
+    privileged: true
     container_name: othercloud
     dns: 
     - 127.0.0.1
@@ -313,6 +314,7 @@ services:
     - ./othercloud:/setup:ro
     - ./othercloud/nginx/sitesconf:/etc/nginx/sites-enabled:ro
     - ./othercloud/bind/apiconfig.yaml:/bindmanager/config.yaml:ro
+    - /dev/rtc:/dev/rtc
     - ./othercloud/bind/config:/etc/bind:rw
     - ./othercloud/bind/zone:/var/cache/bind:rw
     - ./othercloud/nginx/certs:/etc/nginx/certs:rw
