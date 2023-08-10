@@ -26,7 +26,7 @@ networks:
   30-cloudclt:
     driver: macvlan
     driver_opts:
-      parent: eth3
+      parent: eth5
     enable_ipv6: true
     ipam:
       config:
@@ -70,6 +70,28 @@ networks:
         gateway: 8.8.8.253
       - subnet: 2001:4860:4860::/64
         gateway: 2001:4860:4860::ffff
+  50-wscorg:
+    driver: macvlan
+    driver_opts:
+      parent: eth3
+    enable_ipv6: true
+    ipam:
+      config:
+      - subnet: 103.69.91.232/29
+        gateway: 103.69.91.238
+      - subnet: 2407:9240:310f:ffff::ffe8/125
+        gateway: 2407:9240:310f:ffff::ffee
+  55-wscorgclt:
+    driver: macvlan
+    driver_opts:
+      parent: eth4
+    enable_ipv6: true
+    ipam:
+      config:
+      - subnet: 139.39.39.0/24
+        gateway: 139.39.39.253
+      - subnet: 2390:3939:3939::/64
+        gateway: 2390:3939:3939::ffff
 
 services:
   stuixrs:
@@ -166,6 +188,8 @@ services:
       dockerfile: Dockerfile
     volumes:
     - ./cloudflaredns:/setup:ro
+    - ./cloudflaredns/bind/config:/etc/bind:rw
+    - ./cloudflaredns/bind/zone:/var/cache/bind:rw
     command: "/bin/bash /setup/start.sh 1.1.1.254 2606:4700:4700::1"
     networks:
       40-cloudflaredns:
@@ -265,6 +289,8 @@ services:
       dockerfile: Dockerfile
     volumes:
     - ./googledns:/setup:ro
+    - ./googledns/bind/config:/etc/bind:rw
+    - ./googledns/bind/zone:/var/cache/bind:rw
     command: "/bin/bash /setup/start.sh 8.8.8.254 2001:4860:4860::1"
     networks:
       45-googledns:
@@ -286,6 +312,9 @@ services:
     - ./othercloud/frr:/etc/frr:ro
     - ./othercloud:/setup:ro
     - ./othercloud/nginx/sitesconf:/etc/nginx/sites-enabled:ro
+    - ./othercloud/bind/config:/etc/bind:rw
+    - ./othercloud/bind/zone:/var/cache/bind:rw
+    - ./othercloud/nginx/certs:/etc/nginx/certs:rw
     sysctls:
     - net.ipv4.ip_forward=1
     - net.ipv6.conf.default.forwarding=1
@@ -318,9 +347,37 @@ services:
     volumes:
     - ./rootcaserver/config.yaml:/usr/app/config.yaml:ro
     - ./rootcaserver/sign:/usr/app/sign:ro
+    - ./rootcaserver/pki:/usr/app/mountpki:rw
     - ./rootcaserver:/setup:ro
     command: "/bin/bash /setup/start.sh 187.187.187.254 2def:abcd::1"
     networks:
       30-cloudclt:
         ipv4_address: 187.187.187.1
         ipv6_address: 2def:abcd::ca
+  wscorg:
+    cap_add:
+    - CAP_NET_RAW
+    - NET_ADMIN
+    - SYS_ADMIN
+    privileged: false
+    container_name: wscorg
+    build:
+      context: ./wscorg
+      dockerfile: Dockerfile
+    volumes:
+    - ./wscorg/frr:/etc/frr:ro
+    - ./wscorg:/setup:ro
+    sysctls:
+    - net.ipv4.ip_forward=1
+    - net.ipv6.conf.default.forwarding=1
+    - net.ipv6.conf.all.forwarding=1
+    - net.ipv6.conf.all.proxy_ndp=1
+    - net.ipv6.conf.all.accept_ra=2
+    command: "/bin/bash /setup/start.sh"
+    networks:
+      50-wscorg:
+        ipv4_address: 103.69.91.234
+        ipv6_address: 2407:9240:310f:ffff::ffea
+      55-wscorgclt:
+        ipv4_address: 139.39.39.254
+        ipv6_address: 2390:3939:3939::1
